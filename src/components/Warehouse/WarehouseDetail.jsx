@@ -294,7 +294,7 @@ const WarehouseDetail = () => {
                     )}
                   </td>
                   <td className="py-2 px-4">{item.quantity}</td>
-                  <td className="py-2 px-4">{item.price?.toLocaleString('vi-VN')}₫</td>
+                  <td className="py-2 px-4">{item.unitPrice?.toLocaleString('vi-VN')}₫</td>
                   <td className="py-2 px-4">{item.totalAmount}</td>
                   <td className="py-2 px-4">{item.createdAt}</td>
                   <td className="py-2 px-4">{item.updatedAt}</td>

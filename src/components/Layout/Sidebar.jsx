@@ -11,14 +11,15 @@ import {
   UserIcon,
   Cog6ToothIcon,
   QuestionMarkCircleIcon,
+  ArrowDownIcon
 } from '@heroicons/react/24/outline';
 
 const navItems = [
   { to: '/dashboard', label: 'Dashboard', icon: <HomeIcon className="w-6 h-6" /> },
+   { to: '/Import', label: 'Users', icon: <ArrowDownIcon className="w-6 h-6" /> },
   { to: '/categories', label: 'Categories', icon: <FolderOpenIcon className="w-6 h-6" /> },
   { to: '/products', label: 'Products', icon: <CubeIcon className="w-6 h-6" /> },
   { to: '/customers', label: 'Orders', icon: <ShoppingCartIcon className="w-6 h-6" /> },
-  { to: '/users', label: 'Users', icon: <UserIcon className="w-6 h-6" /> },
   { to: '/suppliers', label: 'Settings', icon: <Cog6ToothIcon className="w-6 h-6" /> },
   { to: '/help', label: 'Help', icon: <QuestionMarkCircleIcon className="w-6 h-6" /> },
 ];

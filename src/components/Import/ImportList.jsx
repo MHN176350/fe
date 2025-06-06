@@ -60,7 +60,7 @@ const ImportList = () => {
                   <td className="py-2 px-4">{imp.supplier}</td>
                   <td className="py-2 px-4">
                     <Link
-                      to={`/import/${imp.id}`}
+                      to={`/import/detail/${imp.id}`}
                       className="text-blue-400 hover:underline"
                     >
                       Show Detail

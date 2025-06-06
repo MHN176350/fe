@@ -48,7 +48,7 @@ const ExportList = () => {
                 <th className="py-3 px-4">Total</th>
                 <th className="py-3 px-4">Created By</th>
                 <th className="py-3 px-4">Created Date</th>
-                <th className="py-3 px-4">More</th>
+                <th className="py-3 px-4">Detail</th> {/* New column */}
               </tr>
             </thead>
             <tbody>
@@ -62,12 +62,13 @@ const ExportList = () => {
                   <td className="py-2 px-4">{new Date(exp.createdDate).toLocaleString()}</td>
                   <td className="py-2 px-4">
                     <Link
-                      to={`/export/${exp.id}`}
+                      to={`/export/detail/${exp.id}`}
                       className="text-blue-400 hover:underline"
                     >
                       Show Detail
                     </Link>
                   </td>
+                  
                 </tr>
               ))}
             </tbody>
