@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import api from '../../api/apis';
 import { isTokenExpired } from '../../utils/jwt';
-import './Login.css'; 
 
 const Login = ({setUser}) => {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
@@ -12,7 +11,7 @@ const Login = ({setUser}) => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token && !isTokenExpired(token)) {
-      navigate('/dashboard');
+      navigate('/warehouses');
     }
   }, [navigate]);
 
@@ -33,7 +32,7 @@ const Login = ({setUser}) => {
       setUser(userData);
       localStorage.setItem('user', JSON.stringify(userData));
       localStorage.setItem('token', userData.token);
-      navigate('/dashboard'); 
+      navigate('/warehouses'); 
     } catch (err) {
       setError('Login failed. Please check your credentials.');
     }

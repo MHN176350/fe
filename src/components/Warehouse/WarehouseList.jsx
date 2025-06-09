@@ -4,7 +4,7 @@ import api from '../../api/apis';
 import { useAuth } from '../../hooks/useAuth';
 
 
-const Warehouse = ({ user, showModal, setShowModal }) => {
+const WarehouseList = ({ user, showModal, setShowModal }) => {
   useAuth('/');
   const [modalVisible, setModalVisible] = useState(false);
   const [warehouse, setWarehouse] = useState({ location: '', code: '' });
@@ -12,7 +12,7 @@ const Warehouse = ({ user, showModal, setShowModal }) => {
   const [error, setError] = useState('');
   const [warehouses, setWarehouses] = useState([]);
 
- 
+
   useEffect(() => {
     fetchWarehouses();
   }, []);
@@ -209,4 +209,4 @@ const Warehouse = ({ user, showModal, setShowModal }) => {
   );
 };
 
-export default Warehouse;
+export default WarehouseList;

@@ -14,7 +14,7 @@ import ExportList from './components/Export/ExportList';
 import Dashboard from './components/Dashboard/Dashboard';
 import ExportDetail from './components/Export/ExportDetail';
 import ImportDetail from './components/Import/ImportDetail';
-
+import WarehouseList from './components/Warehouse/WarehouseList';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -44,6 +44,8 @@ function App() {
   <Route path="/login" element={<Login setUser={setUser} />} />
   <Route path="/dashboard" element={<Dashboard user={user} showModal={showModal} setShowModal={setShowModal} />} />
   <Route path="/" element={<Login setUser={setUser} />} />
+  <Route path="/warehouses" element={<WarehouseList user={user} showModal={showModal} setShowModal={setShowModal} />} />
+  <Route path="/warehouse/:id" element={<WarehouseDetail user={user} />} />
   
 </Routes>
       </Layout>

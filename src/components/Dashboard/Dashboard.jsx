@@ -1,211 +1,86 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import api from '../../api/apis';
-import { useAuth } from '../../hooks/useAuth';
+import heroImg from '../../assets/LD.jpg'; // Add a beautiful warehouse image to your assets
+import logo from '../../assets/react.svg';
 
+const features = [
+  {
+    title: 'Smart Inventory',
+    desc: 'Track your stock in real-time and never run out of essentials.',
+    icon: '📦',
+  },
+  {
+    title: 'Easy Import/Export',
+    desc: 'Seamless import and export management with just a few clicks.',
+    icon: '🚚',
+  },
+  {
+    title: 'Insightful Analytics',
+    desc: 'Visualize your warehouse performance with beautiful charts.',
+    icon: '📊',
+  },
+  {
+    title: 'User Friendly',
+    desc: 'Modern, clean, and responsive interface for everyone.',
+    icon: '✨',
+  },
+];
 
-const Dashboard = ({ user, showModal, setShowModal }) => {
-  useAuth('/');
-  const [modalVisible, setModalVisible] = useState(false);
-  const [warehouse, setWarehouse] = useState({ location: '', code: '' });
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
-  const [warehouses, setWarehouses] = useState([]);
-
-
-  useEffect(() => {
-    fetchWarehouses();
-  }, []);
-
-  const fetchWarehouses = async () => {
-    try {
-      const response = await api.get('/api/warehouse/getall');
-      if (response.data.statusCode === 200) {
-        setWarehouses(response.data.data || []);
-        setMessage('');
-      } else {
-        setWarehouses([]);
-        setMessage(response.data.message || 'Failed to fetch warehouses.');
-      }
-    } catch (err) {
-      setWarehouses([]);
-      setMessage('Failed to fetch warehouses.');
-    }
-  };
-
-  // Open modal with animation
-  const openModal = () => {
-    setModalVisible(true);
-    setTimeout(() => setShowModal(true), 10);
-  };
-
-  // Close modal with fade-out animation
-  const closeModal = () => {
-    setShowModal(false);
-    setTimeout(() => setModalVisible(false), 200);
-  };
-
-  const handleWarehouseChange = (e) => {
-    setWarehouse({ ...warehouse, [e.target.name]: e.target.value });
-  };
-
-  const handleWarehouseSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const token = localStorage.getItem('token');
-      const response = await api.post(
-        '/api/warehouse/create',
-        warehouse,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      setMessage(response.data.message);
-      closeModal();
-      setWarehouse({ location: '', code: '' });
-      fetchWarehouses();
-      setTimeout(() => setMessage(''), 4000);
-    } catch (err) {
-      setMessage('Failed to add warehouse.');
-      closeModal();
-      setTimeout(() => setMessage(''), 4000);
-    }
-  };
-
-  // Optionally, you can fetch warehouse items here or in the detail page
-
+const Dashboard = () => {
   return (
-    <>
-      <div className={`flex-1 flex flex-col items-center justify-center ${modalVisible ? 'filter blur-sm pointer-events-none' : ''}`}>
-        <div className="bg-gray-800 p-8 rounded-2xl shadow-lg w-full max-w-4xl mt-10">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold">Warehouses</h2>
-            <button
-              className="px-6 py-2 rounded-full bg-gradient-to-r from-white to-gray-300 text-black font-semibold shadow-md hover:from-white hover:to-gray-400 transition"
-              onClick={openModal}
-            >
-              Add Warehouse
-            </button>
-          </div>
-          {error && <div className="mb-4 text-red-400">{error}</div>}
-          {message && (
-            <div className="mb-4 text-white">{message}</div>
-          )}
-          <table className="w-full text-left bg-gray-700 rounded-lg overflow-hidden">
-            <thead>
-              <tr>
-                <th className="py-3 px-4">#</th>
-                <th className="py-3 px-4">Code</th>
-                <th className="py-3 px-4">Location</th>
-                <th className="py-3 px-4">Item Count</th>
-                <th className="py-3 px-4">Owner</th>
-                <th className="py-3 px-4">Created</th>
-                <th className="py-3 px-4">Updated</th>
-                <th className="py-3 px-4">Detail</th>
-              </tr>
-            </thead>
-            <tbody>
-              {warehouses.length > 0 ? (
-                warehouses.map((wh, idx) => (
-                  <tr key={wh.code || idx} className="border-t border-gray-600">
-                    <td className="py-2 px-4">{idx + 1}</td>
-                    <td className="py-2 px-4">{wh.code}</td>
-                    <td className="py-2 px-4">{wh.location}</td>
-                    <td className="py-2 px-4">{wh.itemCount}</td>
-                    <td className="py-2 px-4">{wh.ownerName}</td>
-                    <td className="py-2 px-4">{wh.createdDate}</td>
-                    <td className="py-2 px-4">{wh.updatedDate}</td>
-                    <td className="py-2 px-4">
-                      <Link
-                        to={`/warehouse/${wh.id}`}
-                        className="text-blue-400 hover:underline"
-                        onClick={async (e) => {
-                         
-                        }}
-                      >
-                        Show Detail
-                      </Link>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={8} className="py-8 text-center text-4xl text-white/30 font-extrabold">
-                    No Warehouses Found
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-indigo-900 to-gray-900 flex flex-col items-center">
+      {/* Hero Section */}
+      <header className="w-full flex flex-col items-center pt-16 pb-10">
+        <img src={logo} alt="Logo" className="w-16 h-16 mb-4 animate-spin-slow" />
+        <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4 text-center drop-shadow-lg">
+          Welcome to <span className="text-blue-400">Smart Warehouse</span>
+        </h1>
+        <p className="text-lg md:text-xl text-gray-200 mb-8 text-center max-w-2xl">
+          Effortlessly manage your inventory, track warehouse operations, and gain insights with our modern warehouse management platform.
+        </p>
+        <Link
+          to="/warehouses"
+          className="px-8 py-3 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold shadow-lg hover:from-blue-600 hover:to-indigo-700 transition text-lg"
+        >
+          Get Started
+        </Link>
+      </header>
+
+      {/* Hero Image */}
+      <div className="w-full flex justify-center mb-12">
+        <img
+          src={heroImg}
+          alt="Warehouse"
+          className="rounded-3xl shadow-2xl w-full max-w-3xl object-cover border-4 border-blue-700"
+          style={{ maxHeight: 350 }}
+        />
       </div>
 
-      {/* Toast message at top right */}
-      {message && (
-        <div className="fixed top-6 right-8 z-50 bg-blue-600 text-white px-6 py-3 rounded-lg shadow-lg animate-fade-in">
-          {message}
-        </div>
-      )}
-
-      {/* Modal with fade animation */}
-      {modalVisible && (
-        <div
-          className={`
-            fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-60
-            transition-opacity duration-200
-            ${showModal ? 'opacity-100' : 'opacity-0 pointer-events-none'}
-          `}
-        >
-          <form
-            onSubmit={handleWarehouseSubmit}
-            className="bg-gray-800 p-8 rounded-2xl shadow-2xl w-full max-w-sm flex flex-col items-center transition-all duration-200"
+      {/* Features Section */}
+      <section className="w-full max-w-5xl px-4 py-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {features.map((f, idx) => (
+          <div
+            key={f.title}
+            className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl shadow-xl p-8 flex flex-col items-center hover:scale-105 transition-transform"
           >
-            <h3 className="text-xl font-bold mb-6 text-white">Add Warehouse</h3>
-            <div className="mb-4 w-full">
-              <label className="block text-gray-300 mb-2" htmlFor="location">
-                Location
-              </label>
-              <input
-                id="location"
-                name="location"
-                type="text"
-                value={warehouse.location}
-                onChange={handleWarehouseChange}
-                required
-                className="w-full px-4 py-3 rounded-full bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-              />
-            </div>
-            <div className="mb-6 w-full">
-              <label className="block text-gray-300 mb-2" htmlFor="code">
-                Code
-              </label>
-              <input
-                id="code"
-                name="code"
-                type="text"
-                value={warehouse.code}
-                onChange={handleWarehouseChange}
-                required
-                className="w-full px-4 py-3 rounded-full bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-              />
-            </div>
-            <div className="flex w-full justify-between">
-              <button
-                type="button"
-                className="px-6 py-2 rounded-full bg-gray-600 text-white font-semibold mr-2 hover:bg-gray-700 transition"
-                onClick={closeModal}
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="px-6 py-2 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold hover:from-blue-600 hover:to-indigo-700 transition"
-              >
-                Submit
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
-    </>
+            <div className="text-5xl mb-4">{f.icon}</div>
+            <h3 className="text-xl font-bold text-blue-300 mb-2">{f.title}</h3>
+            <p className="text-gray-300 text-center">{f.desc}</p>
+          </div>
+        ))}
+      </section>
+
+      {/* Call to Action */}
+      <footer className="w-full flex flex-col items-center py-12 mt-8 bg-gradient-to-t from-gray-900 via-indigo-900 to-transparent">
+        <h2 className="text-2xl font-bold text-white mb-4">Ready to optimize your warehouse?</h2>
+        <Link
+          to="/warehouses"
+          className="px-8 py-3 rounded-full bg-gradient-to-r from-green-400 to-blue-500 text-white font-bold shadow-lg hover:from-green-500 hover:to-blue-600 transition text-lg"
+        >
+          Start Now
+        </Link>
+      </footer>
+    </div>
   );
 };
 

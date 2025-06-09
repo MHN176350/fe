@@ -16,7 +16,7 @@ import {
 
 const navItems = [
   { to: '/dashboard', label: 'Dashboard', icon: <HomeIcon className="w-6 h-6" /> },
-   { to: '/Import', label: 'Users', icon: <ArrowDownIcon className="w-6 h-6" /> },
+   { to: '/warehouses', label: 'Users', icon: <ArrowDownIcon className="w-6 h-6" /> },
   { to: '/categories', label: 'Categories', icon: <FolderOpenIcon className="w-6 h-6" /> },
   { to: '/products', label: 'Products', icon: <CubeIcon className="w-6 h-6" /> },
   { to: '/customers', label: 'Orders', icon: <ShoppingCartIcon className="w-6 h-6" /> },
@@ -48,7 +48,7 @@ const Sidebar = ({ user }) => {
             to={item.to}
             className={({ isActive }) =>
               `flex items-center gap-3 px-4 py-3 rounded-lg transition-colors
-              ${isActive ? 'bg-black text-white font-bold shadow' : 'text-gray-200 hover:bg-gray-500 hover:text-green-300'}
+              ${isActive ? 'bg-black text-white font-bold shadow' : 'text-black hover:bg-gray-700 hover:text-white'}
               ${expanded ? 'justify-start' : 'justify-center'}`
             }
             title={item.label}
