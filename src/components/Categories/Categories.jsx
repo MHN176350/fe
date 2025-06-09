@@ -30,7 +30,6 @@ const Categories = () => {
     fetchCategories();
   }, []);
 
-  // Modal open/close logic
   const openModal = () => {
     setModalVisible(true);
     setTimeout(() => setShowModal(true), 10);
@@ -90,7 +89,7 @@ const Categories = () => {
         </div>
         {notFound ? (
           <div>
-            <div className="absolute top-0 right-0 mt-8 mr-8 text-6xl text-white/30 font-extrabold select-none pointer-events-none">
+            <div className="text-4xl text-white/30 font-extrabold text-center w-full select-none pointer-events-none">
               {notFoundMsg || 'Not Found'}
             </div>
           </div>

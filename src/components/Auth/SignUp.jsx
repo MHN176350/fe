@@ -31,7 +31,7 @@ const SignUp = () => {
         setSuccessMsg(response.data.message);
         setTimeout(() => {
           navigate('/'); // Redirect to login after 5 seconds
-        }, 5000);
+        }, 3000);
       } else {
         setError(response.data.message || 'Registration failed.');
       }
@@ -107,6 +107,7 @@ const SignUp = () => {
           <button
             type="submit"
             className="w-full py-3 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold text-lg shadow-md hover:from-blue-600 hover:to-indigo-700 transition"
+            disabled={!!successMsg}
           >
             Register
           </button>

@@ -28,7 +28,7 @@ const features = [
 
 const Dashboard = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-indigo-900 to-gray-900 flex flex-col items-center">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-500 to-gray-900 flex flex-col items-center">
       {/* Hero Section */}
       <header className="w-full flex flex-col items-center pt-16 pb-10">
         <img src={logo} alt="Logo" className="w-16 h-16 mb-4 animate-spin-slow" />

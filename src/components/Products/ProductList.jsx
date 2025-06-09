@@ -109,7 +109,7 @@ const ProductList = () => {
           </button>
         </div>
         {error && (
-          <div className="mb-4 text-red-400 text-center">{error}</div>
+          <div className="text-4xl text-white/30 text-center w-full select-none pointer-events-none">{error}</div>
         )}
         {products.length > 0 ? (
           <table className="w-full text-left bg-gray-700 rounded-lg overflow-hidden">
@@ -148,7 +148,7 @@ const ProductList = () => {
           </table>
         ) : (
           !error && (
-            <div className="text-4xl text-white/30 font-extrabold text-right w-full select-none pointer-events-none">
+            <div className="text-4xl text-white/30 font-extrabold text-center w-full select-none pointer-events-none">
               No Products Found
             </div>
           )

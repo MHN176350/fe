@@ -116,7 +116,7 @@ const Supplier = () => {
           </table>
         ) : (
           !error && (
-            <div className="text-4xl text-white/30 font-extrabold text-right w-full select-none pointer-events-none">
+            <div className="text-4xl text-white/30 font-extrabold text-center w-full select-none pointer-events-none">
               No Suppliers Found
             </div>
           )
