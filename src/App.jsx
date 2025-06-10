@@ -15,6 +15,7 @@ import Dashboard from './components/Dashboard/Dashboard';
 import ExportDetail from './components/Export/ExportDetail';
 import ImportDetail from './components/Import/ImportDetail';
 import WarehouseList from './components/Warehouse/WarehouseList';
+import UserProfile from './components/User/UserProfile';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -46,6 +47,7 @@ function App() {
   <Route path="/" element={<Login setUser={setUser} />} />
   <Route path="/warehouses" element={<WarehouseList user={user} showModal={showModal} setShowModal={setShowModal} />} />
   <Route path="/warehouse/:id" element={<WarehouseDetail user={user} />} />
+  <Route path="/profile" element={<UserProfile user={user} />} />
   
 </Routes>
       </Layout>

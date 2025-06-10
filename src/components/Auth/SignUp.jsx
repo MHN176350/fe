@@ -30,7 +30,7 @@ const SignUp = () => {
       if (response.data.statusCode === 201) {
         setSuccessMsg(response.data.message);
         setTimeout(() => {
-          navigate('/'); // Redirect to login after 5 seconds
+          navigate('/');
         }, 3000);
       } else {
         setError(response.data.message || 'Registration failed.');
