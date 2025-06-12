@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom'; // Add useNavigate
 import api from '../../api/apis';
 
 const ImportList = () => {
   const { id } = useParams();
+  const navigate = useNavigate(); // Add this line
   const [imports, setImports] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
@@ -136,9 +137,18 @@ const ImportList = () => {
 
   return (
     <div className="flex flex-col items-center min-h-screen pt-12">
-      <div className="w-full max-w-3xl bg-black/70 p-8 rounded-2xl shadow-lg mt-6">
+    
+      <div className="w-full max-w-3xl bg-white p-8 rounded-2xl shadow-lg mt-6 relative">
+        <button
+          onClick={() => navigate(`/warehouse/${id}`)}
+          className="absolute left-4 bottom-4 flex items-center justify-center w-24 h-8 rounded-2xl bg-transparent hover:bg-gray-300  transition"
+          title="Back to Warehouse Detail"
+        >
+          <span className="text-2xl text-gray-600">&#8592;</span> <d
+          className="text-gray-600 font-semibold ml-0.5">Back</d>
+        </button>
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-white">Import Invoices</h2>
+          <h2 className="text-2xl font-bold text-gray-900">Import Invoices</h2>
           <button
             className="px-6 py-2 rounded-full bg-gradient-to-r from-green-500 to-green-700 text-white font-semibold shadow-md hover:from-green-600 hover:to-green-800 transition"
             onClick={() => setShowImportModal(true)}
@@ -148,59 +158,61 @@ const ImportList = () => {
         </div>
         {error && <div className="mb-4 text-red-400">{error}</div>}
         {loading ? (
-          <div className="text-white text-center">Loading...</div>
+          <div className="text-gray-900 text-center">Loading...</div>
         ) : imports.length > 0 ? (
-          <table className="w-full text-left bg-gray-800 rounded-lg overflow-hidden">
-            <thead>
-              <tr>
-                <th className="py-3 px-4">#</th>
-                <th className="py-3 px-4">Created By</th>
-                <th className="py-3 px-4">Created Date</th>
-                <th className="py-3 px-4">Total</th>
-                <th className="py-3 px-4">Supplier Name</th>
-                <th className="py-3 px-4">More</th>
-              </tr>
-            </thead>
-            <tbody>
-              {imports.map((imp, idx) => (
-                <tr key={imp.id} className="border-t border-gray-700">
-                  <td className="py-2 px-4">{idx + 1}</td>
-                  <td className="py-2 px-4">{imp.createdBy}</td>
-                  <td className="py-2 px-4">{new Date(imp.createdDate).toLocaleString()}</td>
-                  <td className="py-2 px-4">{imp.total.toLocaleString('vi-VN')}₫</td>
-                  <td className="py-2 px-4">{imp.supplier}</td>
-                  <td className="py-2 px-4">
-                    <Link
-                      to={`/import/detail/${imp.id}`}
-                      className="text-blue-400 hover:underline"
-                    >
-                      Show Detail
-                    </Link>
-                  </td>
+          <div className="overflow-x-auto rounded-2xl shadow-lg">
+            <table className="w-full text-left bg-gray-50 text-gray-900 rounded-2xl border border-gray-300">
+              <thead>
+                <tr>
+                  <th className="py-3 px-4 border-b border-r border-gray-300 bg-gray-100 text-gray-900 font-bold">#</th>
+                  <th className="py-3 px-4 border-b border-r border-gray-300 bg-gray-100 text-gray-900 font-bold">Created By</th>
+                  <th className="py-3 px-4 border-b border-r border-gray-300 bg-gray-100 text-gray-900 font-bold">Created Date</th>
+                  <th className="py-3 px-4 border-b border-r border-gray-300 bg-gray-100 text-gray-900 font-bold">Total</th>
+                  <th className="py-3 px-4 border-b border-r border-gray-300 bg-gray-100 text-gray-900 font-bold">Supplier Name</th>
+                  <th className="py-3 px-4 border-b border-gray-300 bg-gray-100 text-gray-900 font-bold">More</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {imports.map((imp, idx) => (
+                  <tr key={imp.id} className="hover:bg-gray-200 transition">
+                    <td className="py-2 px-4 border-b border-r border-gray-200">{idx + 1}</td>
+                    <td className="py-2 px-4 border-b border-r border-gray-200">{imp.createdBy}</td>
+                    <td className="py-2 px-4 border-b border-r border-gray-200">{new Date(imp.createdDate).toLocaleString()}</td>
+                    <td className="py-2 px-4 border-b border-r border-gray-200">{imp.total.toLocaleString('vi-VN')}₫</td>
+                    <td className="py-2 px-4 border-b border-r border-gray-200">{imp.supplier}</td>
+                    <td className="py-2 px-4 border-b border-gray-200">
+                      <Link
+                        to={`/import/detail/${imp.id}`}
+                        className="text-blue-600 hover:underline"
+                      >
+                        Show Detail
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         ) : (
-          <div className="text-4xl text-white/30 font-extrabold text-center select-none pointer-events-none">
+          <div className="text-4xl text-gray-400 font-extrabold text-center select-none pointer-events-none">
             No Import Invoices Found
           </div>
         )}
         {message && !error && (
-          <div className="mt-4 text-green-400 text-center">{message}</div>
+          <div className="mt-4 text-green-600 text-center">{message}</div>
         )}
       </div>
 
       {/* Import Invoice Modal */}
       {showImportModal && (
-        <div className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-60">
+        <div className="fixed inset-0 z-40 flex items-center justify-center bg-gray-900 bg-opacity-60">
           <form
             onSubmit={handleImportSubmit}
-            className="bg-gray-800 p-8 rounded-2xl shadow-2xl w-full max-w-lg flex flex-col items-center transition-all duration-200"
+            className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-lg flex flex-col items-center transition-all duration-200"
           >
-            <h3 className="text-xl font-bold mb-6 text-white">Create Import Invoice</h3>
+            <h3 className="text-xl font-bold mb-6 text-gray-900">Create Import Invoice</h3>
             <div className="mb-4 w-full">
-              <label className="block text-gray-300 mb-2" htmlFor="supplierId">
+              <label className="block text-gray-700 mb-2" htmlFor="supplierId">
                 Supplier
               </label>
               <select
@@ -209,7 +221,7 @@ const ImportList = () => {
                 value={importForm.supplierId}
                 onChange={handleImportChange}
                 required
-                className="w-full px-4 py-3 rounded-full bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                className="w-full px-4 py-3 rounded-full bg-gray-100 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
               >
                 <option value="">Select Supplier</option>
                 {suppliers.map((sup) => (
@@ -220,7 +232,7 @@ const ImportList = () => {
               </select>
             </div>
             <div className="mb-4 w-full">
-              <label className="block text-gray-300 mb-2">Products</label>
+              <label className="block text-gray-700 mb-2">Products</label>
               {importForm.list.map((item, idx) => (
                 <div key={idx} className="flex gap-2 mb-2">
                   <select
@@ -228,7 +240,7 @@ const ImportList = () => {
                     value={item.productId}
                     onChange={e => handleProductChange(idx, 'productId', e.target.value)}
                     required
-                    className="flex-1 px-4 py-2 rounded-full bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                    className="flex-1 px-4 py-2 rounded-full bg-gray-100 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                   >
                     <option value="">Select Product</option>
                     {products.map(prod => (
@@ -245,17 +257,17 @@ const ImportList = () => {
                     onChange={e => handleProductChange(idx, 'quantity', e.target.value)}
                     required
                     placeholder="Quantity"
-                    className="w-24 px-4 py-2 rounded-full bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                    className="w-24 px-4 py-2 rounded-full bg-gray-100 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                   />
                   <input
                     type="number"
-                    min="1"
+                    min="1000"
                     name="unitPrice"
                     value={item.unitPrice}
                     onChange={e => handleProductChange(idx, 'unitPrice', e.target.value)}
                     required
                     placeholder="Unit Price"
-                    className="w-32 px-4 py-2 rounded-full bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                    className="w-32 px-4 py-2 rounded-full bg-gray-100 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                   />
                   {importForm.list.length > 1 && (
                     <button
@@ -279,7 +291,7 @@ const ImportList = () => {
             <div className="flex w-full justify-between mt-6">
               <button
                 type="button"
-                className="px-6 py-2 rounded-full bg-gray-600 text-white font-semibold mr-2 hover:bg-gray-700 transition"
+                className="px-6 py-2 rounded-full bg-gray-300 text-gray-700 font-semibold mr-2 hover:bg-gray-400 transition"
                 onClick={() => setShowImportModal(false)}
               >
                 Cancel

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom'; // Add useNavigate
 import api from '../../api/apis';
 
 const WarehouseDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate(); // Add this line
   const [items, setItems] = useState([]);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
@@ -41,10 +42,20 @@ const WarehouseDetail = () => {
   };
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-start min-h-screen pt-12">
-      <div className="w-full max-w-5xl bg-gray-800 p-8 rounded-2xl shadow-lg mt-6">
+    <div className="flex-1 flex flex-col items-center justify-start min-h-screen pt-12 bg-gradient-to-b from-gray-100 to-gray-300">
+      
+      <div className="w-full max-w-5xl bg-white p-8 rounded-2xl shadow-lg mt-6 relative">
+        <button
+          onClick={() => navigate(`/warehouses`)}
+          className="absolute left-4 bottom-4 flex items-center justify-center w-24 h-8 rounded-2xl bg-transparent hover:bg-gray-300  transition"
+          title="Back to Warehouse Detail"
+        >
+          <span className="text-2xl text-gray-600">&#8592;</span> <d
+          className="text-gray-600 font-semibold ml-0.5">Back</d>
+        </button>
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold">Warehouse Detail</h2>
+          
+          <h2 className="text-2xl font-bold text-gray-900">Warehouse Detail</h2>
           <div className="flex gap-4">
             <Link
               to={`/import/${id}`}
@@ -64,55 +75,57 @@ const WarehouseDetail = () => {
           <div className="mb-4 text-red-400 text-center">{error}</div>
         )}
         {items.length > 0 ? (
-          <table className="w-full text-left bg-gray-700 rounded-lg overflow-hidden">
-            <thead>
-              <tr>
-                <th className="py-3 px-4">#</th>
-                <th
-                  className="py-3 px-4 cursor-pointer select-none"
-                  onClick={handleSortByProductName}
-                >
-                  Product Name
-                  <span className="ml-1">{sortAsc ? '▲' : '▼'}</span>
-                </th>
-                <th className="py-3 px-4">Image</th>
-                <th className="py-3 px-4">Quantity</th>
-                <th className="py-3 px-4">Price</th>
-                <th className="py-3 px-4">Total Amount</th>
-                <th className="py-3 px-4">Created</th>
-                <th className="py-3 px-4">Updated</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.map((item, idx) => (
-                <tr key={item.productName + idx} className="border-t border-gray-600">
-                  <td className="py-2 px-4">{idx + 1}</td>
-                  <td className="py-2 px-4">{item.productName}</td>
-                  <td className="py-2 px-4">
-                    {item.productImage && item.productImage !== 'nun' ? (
-                      <img src={item.productImage} alt={item.productName} className="w-12 h-12 object-cover rounded" />
-                    ) : (
-                      <span className="text-gray-400 italic">No Image</span>
-                    )}
-                  </td>
-                  <td className="py-2 px-4">{item.quantity}</td>
-                  <td className="py-2 px-4">{item.unitPrice?.toLocaleString('vi-VN')}₫</td>
-                  <td className="py-2 px-4">{item.totalAmount}</td>
-                  <td className="py-2 px-4">{item.createdAt}</td>
-                  <td className="py-2 px-4">{item.updatedAt}</td>
+          <div className="overflow-x-auto rounded-2xl shadow-lg">
+            <table className="w-full min-w-max table-auto text-left bg-gray-50 text-gray-900 rounded-2xl border border-gray-300">
+              <thead>
+                <tr>
+                  <th className="py-3 px-4 border-b border-r border-gray-300 bg-gray-100 text-gray-900 font-bold">#</th>
+                  <th
+                    className="py-3 px-4 border-b border-r border-gray-300 bg-gray-100 text-gray-900 font-bold cursor-pointer select-none"
+                    onClick={handleSortByProductName}
+                  >
+                    Product Name
+                    <span className="ml-1">{sortAsc ? '▲' : '▼'}</span>
+                  </th>
+                  <th className="py-3 px-4 border-b border-r border-gray-300 bg-gray-100 text-gray-900 font-bold">Image</th>
+                  <th className="py-3 px-4 border-b border-r border-gray-300 bg-gray-100 text-gray-900 font-bold">Quantity</th>
+                  <th className="py-3 px-4 border-b border-r border-gray-300 bg-gray-100 text-gray-900 font-bold">Price</th>
+                  <th className="py-3 px-4 border-b border-r border-gray-300 bg-gray-100 text-gray-900 font-bold">Total Amount</th>
+                  <th className="py-3 px-4 border-b border-r border-gray-300 bg-gray-100 text-gray-900 font-bold">Created</th>
+                  <th className="py-3 px-4 border-b border-gray-300 bg-gray-100 text-gray-900 font-bold">Updated</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {items.map((item, idx) => (
+                  <tr key={item.productName + idx} className="hover:bg-gray-200 transition">
+                    <td className="py-2 px-4 border-b border-r border-gray-200">{idx + 1}</td>
+                    <td className="py-2 px-4 border-b border-r border-gray-200">{item.productName}</td>
+                    <td className="py-2 px-4 border-b border-r border-gray-200">
+                      {item.productImage && item.productImage !== 'nun' ? (
+                        <img src={item.productImage} alt={item.productName} className="w-12 h-12 object-cover rounded" />
+                      ) : (
+                        <span className="text-gray-400 italic">No Image</span>
+                      )}
+                    </td>
+                    <td className="py-2 px-4 border-b border-r border-gray-200">{item.quantity}</td>
+                    <td className="py-2 px-4 border-b border-r border-gray-200">{item.unitPrice?.toLocaleString('vi-VN')}₫</td>
+                    <td className="py-2 px-4 border-b border-r border-gray-200">{item.totalAmount}</td>
+                    <td className="py-2 px-4 border-b border-r border-gray-200">{item.createdAt}</td>
+                    <td className="py-2 px-4 border-b border-gray-200">{item.updatedAt}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         ) : (
           !error && (
-            <div className="text-4xl text-white/30 font-extrabold text-right w-full select-none pointer-events-none">
+            <div className="text-4xl text-gray-400 font-extrabold text-right w-full select-none pointer-events-none">
               No Items Found
             </div>
           )
         )}
         {message && !error && (
-          <div className="mt-4 text-green-400 text-center">{message}</div>
+          <div className="mt-4 text-green-600 text-center">{message}</div>
         )}
       </div>
     </div>

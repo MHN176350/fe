@@ -75,72 +75,71 @@ const WarehouseList = ({ user, showModal, setShowModal }) => {
   return (
     <>
       <div className={`flex-1 flex flex-col items-center justify-center ${modalVisible ? 'filter blur-sm pointer-events-none' : ''}`}>
-        <div className="bg-gray-800 p-8 rounded-2xl shadow-lg w-full max-w-4xl mt-10">
+        <div className="bg-gray-100 p-8 rounded-2xl shadow-lg w-full max-w-4xl mt-10">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold">Warehouses</h2>
+            <h2 className="text-2xl font-bold text-gray-900">Warehouses</h2>
             <button
-              className="px-6 py-2 rounded-full bg-gradient-to-r from-white to-gray-300 text-black font-semibold shadow-md hover:from-white hover:to-gray-400 transition"
+              className="px-6 py-2 rounded-full bg-gradient-to-r from-gray-400 to-gray-200 text-gray-900 font-semibold shadow-md hover:from-gray-500 hover:to-gray-300 transition"
               onClick={openModal}
             >
               Add Warehouse
             </button>
           </div>
-          {error && <div className="mb-4 text-red-400">{error}</div>}
+          {error && <div className="mb-4 text-red-500">{error}</div>}
           {message && (
-            <div className="mb-4 text-white">{message}</div>
+            <div className="mb-4 text-gray-900">{message}</div>
           )}
-          <table className="w-full text-left bg-gray-700 rounded-lg overflow-hidden">
-            <thead>
-              <tr>
-                <th className="py-3 px-4">#</th>
-                <th className="py-3 px-4">Code</th>
-                <th className="py-3 px-4">Location</th>
-                <th className="py-3 px-4">Item Count</th>
-                <th className="py-3 px-4">Owner</th>
-                <th className="py-3 px-4">Created</th>
-                <th className="py-3 px-4">Updated</th>
-                <th className="py-3 px-4">Detail</th>
-              </tr>
-            </thead>
-            <tbody>
-              {warehouses.length > 0 ? (
-                warehouses.map((wh, idx) => (
-                  <tr key={wh.code || idx} className="border-t border-gray-600">
-                    <td className="py-2 px-4">{idx + 1}</td>
-                    <td className="py-2 px-4">{wh.code}</td>
-                    <td className="py-2 px-4">{wh.location}</td>
-                    <td className="py-2 px-4">{wh.itemCount}</td>
-                    <td className="py-2 px-4">{wh.ownerName}</td>
-                    <td className="py-2 px-4">{wh.createdDate}</td>
-                    <td className="py-2 px-4">{wh.updatedDate}</td>
-                    <td className="py-2 px-4">
-                      <Link
-                        to={`/warehouse/${wh.id}`}
-                        className="text-blue-400 hover:underline"
-                        onClick={async (e) => {
-                         
-                        }}
-                      >
-                        Show Detail
-                      </Link>
+          <div className="overflow-x-auto rounded-2xl shadow-lg">
+            <table className="min-w-full bg-white text-gray-900 rounded-2xl border border-gray-300">
+              <thead>
+                <tr>
+                  <th className="py-3 px-4 bg-gray-100 border-b border-r border-gray-300 font-bold">#</th>
+                  <th className="py-3 px-4 bg-gray-100 border-b border-r border-gray-300 font-bold">Code</th>
+                  <th className="py-3 px-4 bg-gray-100 border-b border-r border-gray-300 font-bold">Location</th>
+                  <th className="py-3 px-4 bg-gray-100 border-b border-r border-gray-300 font-bold">Products</th>
+                  <th className="py-3 px-4 bg-gray-100 border-b border-r border-gray-300 font-bold">Owner</th>
+                  <th className="py-3 px-4 bg-gray-100 border-b border-r border-gray-300 font-bold">Created</th>
+                  <th className="py-3 px-4 bg-gray-100 border-b border-r border-gray-300 font-bold">Updated</th>
+                  <th className="py-3 px-4 bg-gray-100 border-b border-gray-300 font-bold">Detail</th>
+                </tr>
+              </thead>
+              <tbody>
+                {warehouses.length > 0 ? (
+                  warehouses.map((wh, idx) => (
+                    <tr key={wh.code || idx} className="hover:bg-gray-100 border-b border-gray-200 transition">
+                      <td className="py-2 px-4 border-r border-gray-200">{idx + 1}</td>
+                      <td className="py-2 px-4 border-r border-gray-200">{wh.code}</td>
+                      <td className="py-2 px-4 border-r border-gray-200">{wh.location}</td>
+                      <td className="py-2 px-4 border-r border-gray-200">{wh.itemCount}</td>
+                      <td className="py-2 px-4 border-r border-gray-200">{wh.ownerName}</td>
+                      <td className="py-2 px-4 border-r border-gray-200">{wh.createdDate}</td>
+                      <td className="py-2 px-4 border-r border-gray-200">{wh.updatedDate}</td>
+                      <td className="py-2 px-4">
+                        <Link
+                          to={`/warehouse/${wh.id}`}
+                          className="text-blue-600 hover:underline"
+                        >
+                          Show Detail
+                        </Link>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={8} className="py-8 text-center text-4xl text-gray-400 font-extrabold">
+                      No Warehouses Found
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={8} className="py-8 text-center text-4xl text-white/30 font-extrabold">
-                    No Warehouses Found
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
       {/* Toast message at top right */}
       {message && (
-        <div className="fixed top-6 right-8 z-50 bg-blue-600 text-white px-6 py-3 rounded-lg shadow-lg animate-fade-in">
+        <div className="fixed top-6 right-8 z-50 bg-gray-700 text-white px-6 py-3 rounded-lg shadow-lg animate-fade-in">
           {message}
         </div>
       )}
@@ -149,18 +148,18 @@ const WarehouseList = ({ user, showModal, setShowModal }) => {
       {modalVisible && (
         <div
           className={`
-            fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-60
+            fixed inset-0 z-40 flex items-center justify-center bg-gray-900 bg-opacity-60
             transition-opacity duration-200
             ${showModal ? 'opacity-100' : 'opacity-0 pointer-events-none'}
           `}
         >
           <form
             onSubmit={handleWarehouseSubmit}
-            className="bg-gray-800 p-8 rounded-2xl shadow-2xl w-full max-w-sm flex flex-col items-center transition-all duration-200"
+            className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-sm flex flex-col items-center transition-all duration-200"
           >
-            <h3 className="text-xl font-bold mb-6 text-white">Add Warehouse</h3>
+            <h3 className="text-xl font-bold mb-6 text-gray-900">Add Warehouse</h3>
             <div className="mb-4 w-full">
-              <label className="block text-gray-300 mb-2" htmlFor="location">
+              <label className="block text-gray-700 mb-2" htmlFor="location">
                 Location
               </label>
               <input
@@ -170,11 +169,11 @@ const WarehouseList = ({ user, showModal, setShowModal }) => {
                 value={warehouse.location}
                 onChange={handleWarehouseChange}
                 required
-                className="w-full px-4 py-3 rounded-full bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                className="w-full px-4 py-3 rounded-full bg-gray-100 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
               />
             </div>
             <div className="mb-6 w-full">
-              <label className="block text-gray-300 mb-2" htmlFor="code">
+              <label className="block text-gray-700 mb-2" htmlFor="code">
                 Code
               </label>
               <input
@@ -184,20 +183,20 @@ const WarehouseList = ({ user, showModal, setShowModal }) => {
                 value={warehouse.code}
                 onChange={handleWarehouseChange}
                 required
-                className="w-full px-4 py-3 rounded-full bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                className="w-full px-4 py-3 rounded-full bg-gray-100 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
               />
             </div>
             <div className="flex w-full justify-between">
               <button
                 type="button"
-                className="px-6 py-2 rounded-full bg-gray-600 text-white font-semibold mr-2 hover:bg-gray-700 transition"
+                className="px-6 py-2 rounded-full bg-gray-300 text-gray-700 font-semibold mr-2 hover:bg-gray-400 transition"
                 onClick={closeModal}
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-6 py-2 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold hover:from-blue-600 hover:to-indigo-700 transition"
+                className="px-6 py-2 rounded-full bg-gradient-to-r from-gray-700 to-gray-500 text-white font-semibold hover:from-gray-800 hover:to-gray-600 transition"
               >
                 Submit
               </button>

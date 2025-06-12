@@ -59,12 +59,12 @@ const CustList = () => {
   };
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-start min-h-screen pt-12">
-      <div className="w-full max-w-3xl bg-gray-800 p-8 rounded-2xl shadow-lg mt-6">
+    <div className="flex-1 flex flex-col items-center justify-start min-h-screen pt-12 bg-gradient-to-b from-gray-100 to-gray-300">
+      <div className="w-full max-w-3xl bg-white p-8 rounded-2xl shadow-lg mt-6">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold mb-6">Customer List</h2>
+          <h2 className="text-2xl font-bold mb-6 text-gray-900">Customer List</h2>
           <button
-            className="px-6 py-2 rounded-full bg-black text-white border border-white font-semibold shadow-md hover:bg-white hover:text-black transition"
+            className="px-6 py-2 rounded-full bg-gradient-to-r from-gray-400 to-gray-200 text-gray-900 font-semibold shadow-md hover:from-gray-500 hover:to-gray-300 transition"
             onClick={() => setShowModal(true)}
           >
             + Create Customer
@@ -74,52 +74,54 @@ const CustList = () => {
           <div className="mb-4 text-red-400 text-center">{error}</div>
         )}
         {customers.length > 0 ? (
-          <table className="w-full text-left bg-gray-700 rounded-lg overflow-hidden">
-            <thead>
-              <tr>
-                <th className="py-3 px-4">#</th>
-                <th className="py-3 px-4">Name</th>
-                <th className="py-3 px-4">Phone Number</th>
-                <th className="py-3 px-4">Address</th>
-                <th className="py-3 px-4">Email</th>
-                <th className="py-3 px-4">Points</th>
-              </tr>
-            </thead>
-            <tbody>
-              {customers.map((cust, idx) => (
-                <tr key={cust.id} className="border-t border-gray-600">
-                  <td className="py-2 px-4">{idx + 1}</td>
-                  <td className="py-2 px-4">{cust.name}</td>
-                  <td className="py-2 px-4">{cust.phoneNumber}</td>
-                  <td className="py-2 px-4">{cust.address}</td>
-                  <td className="py-2 px-4">{cust.email}</td>
-                  <td className="py-2 px-4">{cust.points}</td>
+          <div className="overflow-x-auto rounded-2xl shadow-lg">
+            <table className="w-full min-w-max table-auto text-left bg-gray-50 text-gray-900 rounded-2xl border border-gray-300">
+              <thead>
+                <tr>
+                  <th className="border-b border-r border-gray-300 p-4 bg-gray-100 text-gray-900 text-left font-bold">#</th>
+                  <th className="border-b border-r border-gray-300 p-4 bg-gray-100 text-gray-900 text-left font-bold">Name</th>
+                  <th className="border-b border-r border-gray-300 p-4 bg-gray-100 text-gray-900 text-left font-bold">Phone Number</th>
+                  <th className="border-b border-r border-gray-300 p-4 bg-gray-100 text-gray-900 text-left font-bold">Address</th>
+                  <th className="border-b border-r border-gray-300 p-4 bg-gray-100 text-gray-900 text-left font-bold">Email</th>
+                  <th className="border-b border-gray-300 p-4 bg-gray-100 text-gray-900 text-left font-bold">Points</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {customers.map((cust, idx) => (
+                  <tr key={cust.id} className="hover:bg-gray-200 transition">
+                    <td className="p-4 border-b border-r border-gray-200">{idx + 1}</td>
+                    <td className="p-4 border-b border-r border-gray-200">{cust.name}</td>
+                    <td className="p-4 border-b border-r border-gray-200">{cust.phoneNumber}</td>
+                    <td className="p-4 border-b border-r border-gray-200">{cust.address}</td>
+                    <td className="p-4 border-b border-r border-gray-200">{cust.email}</td>
+                    <td className="p-4 border-b border-gray-200">{cust.points}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         ) : (
           !error && (
-            <div className="text-4xl text-white/30 font-extrabold text-center w-full select-none pointer-events-none">
+            <div className="text-4xl text-gray-400 font-extrabold text-center w-full select-none pointer-events-none">
               No Customers Found
             </div>
           )
         )}
         {message && !error && (
-          <div className="mt-4 text-green-400 text-center">{message}</div>
+          <div className="mt-4 text-green-600 text-center">{message}</div>
         )}
       </div>
 
       {/* Popup Modal for Create Customer */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-60">
           <form
             onSubmit={handleSubmit}
-            className="bg-white text-gray-500 rounded-2xl shadow-2xl p-8 w-full max-w-md flex flex-col items-center"
+            className="bg-white text-gray-900 rounded-2xl shadow-2xl p-8 w-full max-w-md flex flex-col items-center"
           >
-            <h3 className="text-2xl font-bold mb-6 hover:bg">Create Customer</h3>
+            <h3 className="text-2xl font-bold mb-6">Create Customer</h3>
             <div className="mb-4 w-full">
-              <label className="block mb-2 font-semibold" htmlFor="name">
+              <label className="block mb-2 font-semibold text-gray-700" htmlFor="name">
                 Name
               </label>
               <input
@@ -128,11 +130,11 @@ const CustList = () => {
                 value={form.name}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 rounded bg-gray-500 text-white border border-black focus:outline-none focus:ring-2 focus:ring-black"
+                className="w-full px-4 py-2 rounded bg-gray-100 text-gray-900 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400"
               />
             </div>
             <div className="mb-4 w-full">
-              <label className="block mb-2 font-semibold" htmlFor="phoneNumber">
+              <label className="block mb-2 font-semibold text-gray-700" htmlFor="phoneNumber">
                 Phone Number
               </label>
               <input
@@ -141,11 +143,11 @@ const CustList = () => {
                 value={form.phoneNumber}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 rounded  bg-gray-500 text-white border border-black focus:outline-none focus:ring-2 focus:ring-black"
+                className="w-full px-4 py-2 rounded bg-gray-100 text-gray-900 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400"
               />
             </div>
             <div className="mb-4 w-full">
-              <label className="block mb-2 font-semibold" htmlFor="address">
+              <label className="block mb-2 font-semibold text-gray-700" htmlFor="address">
                 Address
               </label>
               <input
@@ -154,11 +156,11 @@ const CustList = () => {
                 value={form.address}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 rounded bg-gray-500 text-white border border-black focus:outline-none focus:ring-2 focus:ring-black"
+                className="w-full px-4 py-2 rounded bg-gray-100 text-gray-900 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400"
               />
             </div>
             <div className="mb-6 w-full">
-              <label className="block mb-2 font-semibold" htmlFor="email">
+              <label className="block mb-2 font-semibold text-gray-700" htmlFor="email">
                 Email
               </label>
               <input
@@ -168,20 +170,20 @@ const CustList = () => {
                 value={form.email}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 rounded  bg-gray-500 text-white border border-black focus:outline-none focus:ring-2 focus:ring-black"
+                className="w-full px-4 py-2 rounded bg-gray-100 text-gray-900 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400"
               />
             </div>
             <div className="flex w-full justify-between">
               <button
                 type="button"
-                className="px-6 py-2 rounded-full bg-black text-white border border-black font-semibold hover:bg-white hover:text-red-400 transition"
+                className="px-6 py-2 rounded-full bg-gray-300 text-gray-700 font-semibold hover:bg-gray-400 transition"
                 onClick={() => setShowModal(false)}
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-6 py-2 rounded-full bg-black text-white border border-black font-semibold hover:bg-white hover:text-green-300 transition"
+                className="px-6 py-2 rounded-full bg-gradient-to-r from-gray-700 to-gray-500 text-white font-semibold hover:from-gray-800 hover:to-gray-600 transition"
               >
                 Create
               </button>

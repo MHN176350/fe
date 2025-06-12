@@ -97,64 +97,66 @@ const ProductList = () => {
   };
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-start min-h-screen pt-12">
-      <div className="w-full max-w-5xl bg-gray-800 p-8 rounded-2xl shadow-lg mt-6 relative">
+    <div className="flex-1 flex flex-col items-center justify-start min-h-screen pt-12 bg-gradient-to-b from-gray-100 to-gray-300">
+      <div className="w-full max-w-5xl bg-white p-8 rounded-2xl shadow-lg mt-6 relative">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold">Product List</h2>
+          <h2 className="text-2xl font-bold text-gray-900">Product List</h2>
           <button
-            className="px-6 py-2 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold shadow-md hover:from-blue-600 hover:to-indigo-700 transition"
+            className="px-6 py-2 rounded-full bg-gradient-to-r from-gray-400 to-gray-200 text-gray-900 font-semibold shadow-md hover:from-gray-500 hover:to-gray-300 transition"
             onClick={openModal}
           >
             Add Product
           </button>
         </div>
         {error && (
-          <div className="text-4xl text-white/30 text-center w-full select-none pointer-events-none">{error}</div>
+          <div className="text-4xl text-gray-400 text-center w-full select-none pointer-events-none">{error}</div>
         )}
         {products.length > 0 ? (
-          <table className="w-full text-left bg-gray-700 rounded-lg overflow-hidden">
-            <thead>
-              <tr>
-                <th className="py-3 px-4">#</th>
-                <th className="py-3 px-4">Code</th>
-                <th className="py-3 px-4">Name</th>
-                <th className="py-3 px-4">Image</th>
-                <th className="py-3 px-4">Description</th>
-                <th className="py-3 px-4">Category</th>
-                <th className="py-3 px-4">Created</th>
-                <th className="py-3 px-4">Updated</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map((prod, idx) => (
-                <tr key={prod.code || idx} className="border-t border-gray-600">
-                  <td className="py-2 px-4">{idx + 1}</td>
-                  <td className="py-2 px-4">{prod.code}</td>
-                  <td className="py-2 px-4">{prod.name}</td>
-                  <td className="py-2 px-4">
-                    {prod.image && prod.image !== 'nun' ? (
-                      <img src={prod.image} alt={prod.name} className="w-12 h-12 object-cover rounded" />
-                    ) : (
-                      <span className="text-gray-400 italic">No Image</span>
-                    )}
-                  </td>
-                  <td className="py-2 px-4">{prod.description}</td>
-                  <td className="py-2 px-4">{prod.categoryName}</td>
-                  <td className="py-2 px-4">{prod.createdDate}</td>
-                  <td className="py-2 px-4">{prod.updatedDate}</td>
+          <div className="overflow-x-auto rounded-2xl shadow-lg">
+            <table className="w-full min-w-max table-auto text-left bg-gray-50 text-gray-900 rounded-2xl border border-gray-300">
+              <thead>
+                <tr>
+                  <th className="border-b border-r border-gray-300 p-4 bg-gray-100 text-gray-900 text-left font-bold">#</th>
+                  <th className="border-b border-r border-gray-300 p-4 bg-gray-100 text-gray-900 text-left font-bold">Code</th>
+                  <th className="border-b border-r border-gray-300 p-4 bg-gray-100 text-gray-900 text-left font-bold">Name</th>
+                  <th className="border-b border-r border-gray-300 p-4 bg-gray-100 text-gray-900 text-left font-bold">Image</th>
+                  <th className="border-b border-r border-gray-300 p-4 bg-gray-100 text-gray-900 text-left font-bold">Description</th>
+                  <th className="border-b border-r border-gray-300 p-4 bg-gray-100 text-gray-900 text-left font-bold">Category</th>
+                  <th className="border-b border-r border-gray-300 p-4 bg-gray-100 text-gray-900 text-left font-bold">Created</th>
+                  <th className="border-b border-gray-300 p-4 bg-gray-100 text-gray-900 text-left font-bold">Updated</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {products.map((prod, idx) => (
+                  <tr key={prod.code || idx} className="hover:bg-gray-200 transition">
+                    <td className="p-4 border-b border-r border-gray-200">{idx + 1}</td>
+                    <td className="p-4 border-b border-r border-gray-200">{prod.code}</td>
+                    <td className="p-4 border-b border-r border-gray-200">{prod.name}</td>
+                    <td className="p-4 border-b border-r border-gray-200">
+                      {prod.image && prod.image !== 'nun' ? (
+                        <img src={prod.image} alt={prod.name} className="w-12 h-12 object-cover rounded" />
+                      ) : (
+                        <span className="text-gray-400 italic">No Image</span>
+                      )}
+                    </td>
+                    <td className="p-4 border-b border-r border-gray-200">{prod.description}</td>
+                    <td className="p-4 border-b border-r border-gray-200">{prod.categoryName}</td>
+                    <td className="p-4 border-b border-r border-gray-200">{prod.createdDate}</td>
+                    <td className="p-4 border-b border-gray-200">{prod.updatedDate}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         ) : (
           !error && (
-            <div className="text-4xl text-white/30 font-extrabold text-center w-full select-none pointer-events-none">
+            <div className="text-4xl text-gray-400 font-extrabold text-center w-full select-none pointer-events-none">
               No Products Found
             </div>
           )
         )}
         {message && !error && (
-          <div className="mt-4 text-green-400 text-center">{message}</div>
+          <div className="mt-4 text-green-600 text-center">{message}</div>
         )}
       </div>
 
@@ -162,18 +164,18 @@ const ProductList = () => {
       {modalVisible && (
         <div
           className={`
-            fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-60
+            fixed inset-0 z-40 flex items-center justify-center bg-gray-900 bg-opacity-60
             transition-opacity duration-200
             ${showModal ? 'opacity-100' : 'opacity-0 pointer-events-none'}
           `}
         >
           <form
             onSubmit={handleSubmit}
-            className="bg-gray-800 p-8 rounded-2xl shadow-2xl w-full max-w-sm flex flex-col items-center transition-all duration-200"
+            className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-sm flex flex-col items-center transition-all duration-200"
           >
-            <h3 className="text-xl font-bold mb-6 text-white">Add Product</h3>
+            <h3 className="text-xl font-bold mb-6 text-gray-900">Add Product</h3>
             <div className="mb-4 w-full">
-              <label className="block text-gray-300 mb-2" htmlFor="code">
+              <label className="block text-gray-700 mb-2" htmlFor="code">
                 Code
               </label>
               <input
@@ -183,11 +185,11 @@ const ProductList = () => {
                 value={form.code}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 rounded-full bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                className="w-full px-4 py-3 rounded-full bg-gray-100 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
               />
             </div>
             <div className="mb-4 w-full">
-              <label className="block text-gray-300 mb-2" htmlFor="name">
+              <label className="block text-gray-700 mb-2" htmlFor="name" >
                 Name
               </label>
               <input
@@ -197,11 +199,11 @@ const ProductList = () => {
                 value={form.name}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 rounded-full bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                className="w-full px-4 py-3 rounded-full bg-gray-100 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
               />
             </div>
             <div className="mb-4 w-full">
-              <label className="block text-gray-300 mb-2" htmlFor="description">
+              <label className="block text-gray-700 mb-2" htmlFor="description">
                 Description
               </label>
               <input
@@ -211,11 +213,11 @@ const ProductList = () => {
                 value={form.description}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 rounded-full bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                className="w-full px-4 py-3 rounded-full bg-gray-100 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
               />
             </div>
             <div className="mb-6 w-full">
-              <label className="block text-gray-300 mb-2" htmlFor="catId">
+              <label className="block text-gray-700 mb-2" htmlFor="catId">
                 Category
               </label>
               <select
@@ -224,7 +226,7 @@ const ProductList = () => {
                 value={form.catId}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 rounded-full bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                className="w-full px-4 py-3 rounded-full bg-gray-100 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
               >
                 <option value="">Select Category</option>
                 {categories.map((cat) => (
@@ -237,14 +239,14 @@ const ProductList = () => {
             <div className="flex w-full justify-between">
               <button
                 type="button"
-                className="px-6 py-2 rounded-full bg-gray-600 text-white font-semibold mr-2 hover:bg-gray-700 transition"
+                className="px-6 py-2 rounded-full bg-gray-300 text-gray-700 font-semibold mr-2 hover:bg-gray-400 transition"
                 onClick={closeModal}
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-6 py-2 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold hover:from-blue-600 hover:to-indigo-700 transition"
+                className="px-6 py-2 rounded-full bg-gradient-to-r from-gray-700 to-gray-500 text-white font-semibold hover:from-gray-800 hover:to-gray-600 transition"
               >
                 Submit
               </button>

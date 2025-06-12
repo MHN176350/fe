@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../api/apis';
 
-const ImportDetail = () => {
-  const { id } = useParams(); 
+const ExportDetail = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [details, setDetails] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchImportDetail = async () => {
+    const fetchExportDetail = async () => {
       setLoading(true);
       try {
         const res = await api.get(`/api/export/exportDetail/${id}`);
@@ -23,18 +24,27 @@ const ImportDetail = () => {
         }
       } catch {
         setDetails([]);
-        setError('Failed to fetch import detail.');
+        setError('Failed to fetch export detail.');
       } finally {
         setLoading(false);
       }
     };
-    fetchImportDetail();
+    fetchExportDetail();
   }, [id]);
 
   return (
     <div className="flex flex-col items-center min-h-screen pt-12">
-      <div className="w-full max-w-2xl bg-black/70 p-8 rounded-2xl shadow-lg mt-6">
-        <h2 className="text-2xl font-bold mb-6 text-white">Import Invoice Detail</h2>
+      <div className="w-full max-w-2xl bg-black/70 p-8 rounded-2xl shadow-lg mt-6 relative">
+        {/* Back Button */}
+        <button
+          onClick={() => navigate(`/export/${id}`)}
+          className="absolute left-4 bottom-4 flex items-center justify-center w-24 h-8 rounded-2xl bg-transparent hover:bg-gray-300 transition"
+          title="Back to Export List"
+        >
+          <span className="text-2xl text-gray-200">&#8592;</span>
+          <span className="text-gray-200 font-semibold ml-0.5">Back</span>
+        </button>
+        <h2 className="text-2xl font-bold mb-6 text-white">Export Invoice Detail</h2>
         {error && <div className="mb-4 text-red-400">{error}</div>}
         {loading ? (
           <div className="text-white text-center">Loading...</div>
@@ -76,4 +86,4 @@ const ImportDetail = () => {
   );
 };
 
-export default ImportDetail;
+export default ExportDetail;

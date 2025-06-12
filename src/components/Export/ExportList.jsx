@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import api from '../../api/apis';
 
 const ExportList = () => {
-  const { id } = useParams(); // warehouse id
+  const { id } = useParams();
+  const navigate = useNavigate();
+
   const [exports, setExports] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
@@ -119,7 +121,7 @@ const ExportList = () => {
           unitPrice: Number(item.unitPrice)
         }))
       };
-      const response = await api.post('/api/export/export', payload, {
+      const response = await api.post('/api/export/create', payload, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMessage(response.data.message);
@@ -140,9 +142,18 @@ const ExportList = () => {
 
   return (
     <div className="flex flex-col items-center min-h-screen pt-12">
-      <div className="w-full max-w-3xl bg-black/70 p-8 rounded-2xl shadow-lg mt-6">
+      <div className="w-full max-w-3xl bg-white p-8 rounded-2xl shadow-lg mt-6 relative">
+      
+        <button
+          onClick={() => navigate(`/warehouse/${id}`)}
+          className="absolute left-4 bottom-4 flex items-center justify-center w-24 h-8 rounded-2xl bg-transparent hover:bg-gray-300  transition"
+          title="Back to Warehouse Detail"
+        >
+          <span className="text-2xl text-gray-600">&#8592;</span> <d
+          className="text-gray-600 font-semibold ml-0.5">Back</d>
+        </button>
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold mb-6 text-white">Export Invoices</h2>
+          <h2 className="text-2xl font-bold text-gray-900">Export Invoices</h2>
           <button
             className="px-6 py-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold shadow-md hover:from-blue-600 hover:to-blue-800 transition"
             onClick={() => setShowExportModal(true)}
@@ -152,61 +163,63 @@ const ExportList = () => {
         </div>
         {error && <div className="mb-4 text-red-400">{error}</div>}
         {loading ? (
-          <div className="text-white text-center">Loading...</div>
+          <div className="text-gray-900 text-center">Loading...</div>
         ) : exports.length > 0 ? (
-          <table className="w-full text-left bg-gray-800 rounded-lg overflow-hidden">
-            <thead>
-              <tr>
-                <th className="py-3 px-4">#</th>
-                <th className="py-3 px-4">Customer Name</th>
-                <th className="py-3 px-4">Discount</th>
-                <th className="py-3 px-4">Total</th>
-                <th className="py-3 px-4">Created By</th>
-                <th className="py-3 px-4">Created Date</th>
-                <th className="py-3 px-4">Detail</th>
-              </tr>
-            </thead>
-            <tbody>
-              {exports.map((exp, idx) => (
-                <tr key={exp.id} className="border-t border-gray-700">
-                  <td className="py-2 px-4">{idx + 1}</td>
-                  <td className="py-2 px-4">{exp.customerName}</td>
-                  <td className="py-2 px-4">{exp.discount?.toLocaleString('vi-VN')}₫</td>
-                  <td className="py-2 px-4">{exp.total?.toLocaleString('vi-VN')}₫</td>
-                  <td className="py-2 px-4">{exp.createdBy}</td>
-                  <td className="py-2 px-4">{new Date(exp.createdDate).toLocaleString()}</td>
-                  <td className="py-2 px-4">
-                    <Link
-                      to={`/export/detail/${exp.id}`}
-                      className="text-blue-400 hover:underline"
-                    >
-                      Show Detail
-                    </Link>
-                  </td>
+          <div className="overflow-x-auto rounded-2xl shadow-lg">
+            <table className="w-full text-left bg-gray-50 text-gray-900 rounded-2xl border border-gray-300">
+              <thead>
+                <tr>
+                  <th className="py-3 px-4 border-b border-r border-gray-300 bg-gray-100 font-bold">#</th>
+                  <th className="py-3 px-4 border-b border-r border-gray-300 bg-gray-100 font-bold">Customer Name</th>
+                  <th className="py-3 px-4 border-b border-r border-gray-300 bg-gray-100 font-bold">Discount</th>
+                  <th className="py-3 px-4 border-b border-r border-gray-300 bg-gray-100 font-bold">Total</th>
+                  <th className="py-3 px-4 border-b border-r border-gray-300 bg-gray-100 font-bold">Created By</th>
+                  <th className="py-3 px-4 border-b border-r border-gray-300 bg-gray-100 font-bold">Created Date</th>
+                  <th className="py-3 px-4 border-b border-gray-300 bg-gray-100 font-bold">Detail</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {exports.map((exp, idx) => (
+                  <tr key={exp.id} className="hover:bg-gray-200 transition">
+                    <td className="py-2 px-4 border-b border-r border-gray-200">{idx + 1}</td>
+                    <td className="py-2 px-4 border-b border-r border-gray-200">{exp.customerName}</td>
+                    <td className="py-2 px-4 border-b border-r border-gray-200">{exp.discount?.toLocaleString('vi-VN')}₫</td>
+                    <td className="py-2 px-4 border-b border-r border-gray-200">{exp.total?.toLocaleString('vi-VN')}₫</td>
+                    <td className="py-2 px-4 border-b border-r border-gray-200">{exp.createdBy}</td>
+                    <td className="py-2 px-4 border-b border-r border-gray-200">{new Date(exp.createdDate).toLocaleString()}</td>
+                    <td className="py-2 px-4 border-b border-gray-200">
+                      <Link
+                        to={`/export/detail/${exp.id}`}
+                        className="text-blue-600 hover:underline"
+                      >
+                        Show Detail
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         ) : (
-          <div className="text-4xl text-white/30 font-extrabold text-center select-none pointer-events-none">
+          <div className="text-4xl text-gray-400 font-extrabold text-center select-none pointer-events-none">
             No Export Invoices Found
           </div>
         )}
         {message && !error && (
-          <div className="mt-4 text-green-400 text-center">{message}</div>
+          <div className="mt-4 text-green-600 text-center">{message}</div>
         )}
       </div>
 
       {/* Export Invoice Modal */}
       {showExportModal && (
-        <div className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-60">
+        <div className="fixed inset-0 z-40 flex items-center justify-center bg-gray-900 bg-opacity-60">
           <form
             onSubmit={handleExportSubmit}
-            className="bg-gray-800 p-8 rounded-2xl shadow-2xl w-full max-w-lg flex flex-col items-center transition-all duration-200"
+            className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-lg flex flex-col items-center transition-all duration-200"
           >
-            <h3 className="text-xl font-bold mb-6 text-white">Create Export Invoice</h3>
+            <h3 className="text-xl font-bold mb-6 text-gray-900">Create Export Invoice</h3>
             <div className="mb-4 w-full">
-              <label className="block text-gray-300 mb-2" htmlFor="custId">
+              <label className="block text-gray-700 mb-2" htmlFor="custId">
                 Customer
               </label>
               <select
@@ -215,7 +228,7 @@ const ExportList = () => {
                 value={exportForm.custId}
                 onChange={handleExportChange}
                 required
-                className="w-full px-4 py-3 rounded-full bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                className="w-full px-4 py-3 rounded-full bg-gray-100 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
               >
                 <option value="">Select Customer</option>
                 {customers.map((cust) => (
@@ -234,12 +247,12 @@ const ExportList = () => {
                 onChange={handleExportChange}
                 className="mr-2"
               />
-              <label htmlFor="usePoint" className="text-gray-300">
+              <label htmlFor="usePoint" className="text-gray-700">
                 Use Points
               </label>
             </div>
             <div className="mb-4 w-full">
-              <label className="block text-gray-300 mb-2">Items</label>
+              <label className="block text-gray-700 mb-2">Items</label>
               {exportForm.items.map((item, idx) => (
                 <div key={idx} className="flex gap-2 mb-2">
                   <select
@@ -247,7 +260,7 @@ const ExportList = () => {
                     value={item.itemId}
                     onChange={e => handleExportItemChange(idx, 'itemId', e.target.value)}
                     required
-                    className="flex-1 px-4 py-2 rounded-full bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                    className="flex-1 px-4 py-2 rounded-full bg-gray-100 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                   >
                     <option value="">Select Item</option>
                     {items.map((it, iidx) => (
@@ -264,7 +277,7 @@ const ExportList = () => {
                     onChange={e => handleExportItemChange(idx, 'quantity', e.target.value)}
                     required
                     placeholder="Quantity"
-                    className="w-24 px-4 py-2 rounded-full bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                    className="w-24 px-4 py-2 rounded-full bg-gray-100 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                   />
                   <input
                     type="number"
@@ -274,7 +287,7 @@ const ExportList = () => {
                     onChange={e => handleExportItemChange(idx, 'unitPrice', e.target.value)}
                     required
                     placeholder="Unit Price"
-                    className="w-32 px-4 py-2 rounded-full bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                    className="w-32 px-4 py-2 rounded-full bg-gray-100 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                   />
                   {exportForm.items.length > 1 && (
                     <button
@@ -298,7 +311,7 @@ const ExportList = () => {
             <div className="flex w-full justify-between mt-6">
               <button
                 type="button"
-                className="px-6 py-2 rounded-full bg-gray-600 text-white font-semibold mr-2 hover:bg-gray-700 transition"
+                className="px-6 py-2 rounded-full bg-gray-300 text-gray-700 font-semibold mr-2 hover:bg-gray-400 transition"
                 onClick={() => setShowExportModal(false)}
               >
                 Cancel

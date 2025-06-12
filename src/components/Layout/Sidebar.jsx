@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import reactLogo from '../../assets/react.svg';
 
 // Heroicons
@@ -26,6 +26,26 @@ const navItems = [
 
 const Sidebar = ({ user }) => {
   const [expanded, setExpanded] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+
+  if (
+    location.pathname === '/login' ||
+    location.pathname === '/register'
+  ) {
+    return null;
+  }
+
+  const handleLogout = () => {
+    // Clear all tokens and cache
+    localStorage.clear();
+    sessionStorage.clear();
+    if ('caches' in window) {
+      caches.keys().then(names => names.forEach(name => caches.delete(name)));
+    }
+    navigate('/login');
+  };
 
   return (
     <aside
@@ -58,6 +78,14 @@ const Sidebar = ({ user }) => {
           </NavLink>
         ))}
       </nav>
+      {/* Logout Button */}
+      <button
+        onClick={handleLogout}
+        className={`mt-auto mb-4 px-4 py-2 rounded-lg bg-gradient-to-r from-gray-400 to-gray-600 text-white font-semibold shadow hover:from-gray-500 hover:to-gray-700 transition w-4/5 ${expanded ? 'flex justify-center' : 'mx-auto'}`}
+        title="Logout"
+      >
+        Logout
+      </button>
     </aside>
   );
 };

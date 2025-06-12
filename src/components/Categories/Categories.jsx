@@ -77,11 +77,11 @@ const Categories = () => {
 
   return (
     <div className="flex-1 flex flex-col items-center justify-start min-h-screen pt-12 relative">
-      <div className="w-full max-w-3xl bg-gray-800 p-8 rounded-2xl shadow-lg mt-6 relative">
+      <div className="w-full max-w-3xl bg-white p-8 rounded-2xl shadow-lg mt-6 relative">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold">Categories</h2>
+          <h2 className="text-2xl font-bold text-gray-900">Categories</h2>
           <button
-            className="px-6 py-2 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold shadow-md hover:from-blue-600 hover:to-indigo-700 transition"
+            className="px-6 py-2 rounded-full bg-gradient-to-r from-gray-400 to-gray-200 text-gray-900 font-semibold shadow-md hover:from-gray-500 hover:to-gray-300 transition"
             onClick={openModal}
           >
             Add Category
@@ -89,35 +89,45 @@ const Categories = () => {
         </div>
         {notFound ? (
           <div>
-            <div className="text-4xl text-white/30 font-extrabold text-center w-full select-none pointer-events-none">
+            <div className="text-4xl text-gray-400 font-extrabold text-center w-full select-none pointer-events-none">
               {notFoundMsg || 'Not Found'}
             </div>
           </div>
         ) : (
-          <table className="w-full text-left bg-gray-700 rounded-lg overflow-hidden">
-            <thead>
-              <tr>
-                <th className="py-3 px-4">#</th>
-                <th className="py-3 px-4">Name</th>
-                <th className="py-3 px-4">Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              {categories.map((cat, idx) => (
-                <tr key={cat.id || idx} className="border-t border-gray-600">
-                  <td className="py-2 px-4">{idx + 1}</td>
-                  <td className="py-2 px-4">{cat.name}</td>
-                  <td className="py-2 px-4">{cat.description}</td>
+          <div className="overflow-x-auto rounded-2xl shadow-lg">
+            <table className="w-full min-w-max table-auto text-left bg-gray-50 text-gray-900 rounded-2xl border border-gray-300">
+              <thead>
+                <tr>
+                  <th className="border-b border-r border-gray-300 p-4 bg-gray-100 text-gray-900 text-left font-bold">#</th>
+                  <th className="border-b border-r border-gray-300 p-4 bg-gray-100 text-gray-900 text-left font-bold">Name</th>
+                  <th className="border-b border-gray-300 p-4 bg-gray-100 text-gray-900 text-left font-bold">Description</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {categories.length > 0 ? (
+                  categories.map((cat, idx) => (
+                    <tr key={cat.id || idx} className="hover:bg-gray-200 transition">
+                      <td className="p-4 border-b border-r border-gray-200">{idx + 1}</td>
+                      <td className="p-4 border-b border-r border-gray-200">{cat.name}</td>
+                      <td className="p-4 border-b border-gray-200">{cat.description}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={3} className="py-8 text-center text-4xl text-gray-400 font-extrabold border-b border-gray-200">
+                      No Categories Found
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
 
       {/* Toast message */}
       {message && (
-        <div className="fixed top-6 right-8 z-50 bg-blue-600 text-white px-6 py-3 rounded-lg shadow-lg animate-fade-in">
+        <div className="fixed top-6 right-8 z-50 bg-gray-700 text-white px-6 py-3 rounded-lg shadow-lg animate-fade-in">
           {message}
         </div>
       )}
@@ -126,18 +136,18 @@ const Categories = () => {
       {modalVisible && (
         <div
           className={`
-            fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-60
+            fixed inset-0 z-40 flex items-center justify-center bg-gray-900 bg-opacity-60
             transition-opacity duration-200
             ${showModal ? 'opacity-100' : 'opacity-0 pointer-events-none'}
           `}
         >
           <form
             onSubmit={handleSubmit}
-            className="bg-gray-800 p-8 rounded-2xl shadow-2xl w-full max-w-sm flex flex-col items-center transition-all duration-200"
+            className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-sm flex flex-col items-center transition-all duration-200"
           >
-            <h3 className="text-xl font-bold mb-6 text-white">Add Category</h3>
+            <h3 className="text-xl font-bold mb-6 text-gray-900">Add Category</h3>
             <div className="mb-4 w-full">
-              <label className="block text-gray-300 mb-2" htmlFor="name">
+              <label className="block text-gray-700 mb-2" htmlFor="name">
                 Name
               </label>
               <input
@@ -147,11 +157,11 @@ const Categories = () => {
                 value={form.name}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 rounded-full bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                className="w-full px-4 py-3 rounded-full bg-gray-100 text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-400 transition"
               />
             </div>
             <div className="mb-6 w-full">
-              <label className="block text-gray-300 mb-2" htmlFor="description">
+              <label className="block text-gray-700 mb-2" htmlFor="description">
                 Description
               </label>
               <input
@@ -161,20 +171,20 @@ const Categories = () => {
                 value={form.description}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 rounded-full bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                className="w-full px-4 py-3 rounded-full bg-gray-100 text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-400 transition"
               />
             </div>
             <div className="flex w-full justify-between">
               <button
                 type="button"
-                className="px-6 py-2 rounded-full bg-gray-600 text-white font-semibold mr-2 hover:bg-gray-700 transition"
+                className="px-6 py-2 rounded-full bg-gray-300 text-gray-700 font-semibold mr-2 hover:bg-gray-400 transition"
                 onClick={closeModal}
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-6 py-2 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold hover:from-blue-600 hover:to-indigo-700 transition"
+                className="px-6 py-2 rounded-full bg-gradient-to-r from-gray-700 to-gray-500 text-white font-semibold hover:from-gray-800 hover:to-gray-600 transition"
               >
                 Submit
               </button>
