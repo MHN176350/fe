@@ -70,7 +70,7 @@ const Dashboard = () => {
         ))}
       </section>
 
-      {/* Call to Action */}
+
       <footer className="w-full flex flex-col items-center py-12 mt-8 bg-gradient-to-t from-gray-200 via-gray-100 to-transparent">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">Ready to optimize your warehouse?</h2>
         <Link

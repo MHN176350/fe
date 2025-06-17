@@ -16,6 +16,8 @@ import ExportDetail from './components/Export/ExportDetail';
 import ImportDetail from './components/Import/ImportDetail';
 import WarehouseList from './components/Warehouse/WarehouseList';
 import UserProfile from './components/User/UserProfile';
+import UserManagement from './components/User/UserManagement';
+import WarehouseMemberManage from './components/Warehouse/WarehouseMemberManage';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -48,11 +50,16 @@ function App() {
   <Route path="/warehouses" element={<WarehouseList user={user} showModal={showModal} setShowModal={setShowModal} />} />
   <Route path="/warehouse/:id" element={<WarehouseDetail user={user} />} />
   <Route path="/profile" element={<UserProfile user={user} />} />
+  <Route path="/users" element={<UserManagement user={user} />} />
+  <Route path="/storage-member" element={<WarehouseMemberManage user={user} />} />
+  
+  {/* Catch-all route for 404 */}
+  <Route path="*" element={<div>404 Not Found</div>} />
   
 </Routes>
       </Layout>
     </Router>
   );
 }
-
+  
 export default App;

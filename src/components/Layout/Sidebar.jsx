@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import reactLogo from '../../assets/react.svg';
+import { jwtDecode } from "jwt-decode";
 
-// Heroicons
+
 import {
   HomeIcon,
   FolderOpenIcon,
@@ -16,12 +17,18 @@ import {
 
 const navItems = [
   { to: '/dashboard', label: 'Dashboard', icon: <HomeIcon className="w-6 h-6" /> },
-   { to: '/warehouses', label: 'Users', icon: <ArrowDownIcon className="w-6 h-6" /> },
+  { to: '/warehouses', label: 'Users', icon: <ArrowDownIcon className="w-6 h-6" /> },
   { to: '/categories', label: 'Categories', icon: <FolderOpenIcon className="w-6 h-6" /> },
   { to: '/products', label: 'Products', icon: <CubeIcon className="w-6 h-6" /> },
   { to: '/customers', label: 'Orders', icon: <ShoppingCartIcon className="w-6 h-6" /> },
   { to: '/suppliers', label: 'Settings', icon: <Cog6ToothIcon className="w-6 h-6" /> },
   { to: '/help', label: 'Help', icon: <QuestionMarkCircleIcon className="w-6 h-6" /> },
+];
+
+// Admin-only nav items
+const adminNavItems = [
+  { to: '/user-management', label: 'Manage Users', icon: <UserIcon className="w-6 h-6" /> },
+  { to: '/storage-member', label: 'Manage Storage Member', icon: <UserIcon className="w-6 h-6"/> },
 ];
 
 const Sidebar = ({ user }) => {
@@ -37,8 +44,22 @@ const Sidebar = ({ user }) => {
     return null;
   }
 
+  
+  let isAdmin = false;
+  const token = localStorage.getItem('token');
+  if (token) {
+    try {
+      const decoded = jwtDecode(token);
+     
+      isAdmin =
+        decoded?.Role === 'Admin' ||
+        (Array.isArray(decoded?.Role) && decoded.Role.includes('Admin'))
+    } catch (e) {
+      isAdmin = false;
+    }
+  }
+
   const handleLogout = () => {
-    // Clear all tokens and cache
     localStorage.clear();
     sessionStorage.clear();
     if ('caches' in window) {
@@ -77,6 +98,23 @@ const Sidebar = ({ user }) => {
             {expanded && <span className="text-sm">{item.label}</span>}
           </NavLink>
         ))}
+        {/* Admin-only nav items */}
+        {isAdmin &&
+          adminNavItems.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-4 py-3 rounded-lg transition-colors
+                ${isActive ? 'bg-black text-white font-bold shadow' : 'text-black hover:bg-gray-700 hover:text-white'}
+                ${expanded ? 'justify-start' : 'justify-center'}`
+              }
+              title={item.label}
+            >
+              {item.icon}
+              {expanded && <span className="text-sm">{item.label}</span>}
+            </NavLink>
+          ))}
       </nav>
       {/* Logout Button */}
       <button
