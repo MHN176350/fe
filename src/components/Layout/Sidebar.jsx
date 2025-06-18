@@ -6,29 +6,30 @@ import { jwtDecode } from "jwt-decode";
 
 import {
   HomeIcon,
-  FolderOpenIcon,
+  BuildingStorefrontIcon,
+  Squares2X2Icon,
   CubeIcon,
-  ShoppingCartIcon,
-  UserIcon,
+  UsersIcon,
+  TruckIcon,
   Cog6ToothIcon,
   QuestionMarkCircleIcon,
-  ArrowDownIcon
+  UserIcon,
 } from '@heroicons/react/24/outline';
 
 const navItems = [
   { to: '/dashboard', label: 'Dashboard', icon: <HomeIcon className="w-6 h-6" /> },
-  { to: '/warehouses', label: 'Users', icon: <ArrowDownIcon className="w-6 h-6" /> },
-  { to: '/categories', label: 'Categories', icon: <FolderOpenIcon className="w-6 h-6" /> },
+  { to: '/warehouses', label: 'Warehouses', icon: <BuildingStorefrontIcon className="w-6 h-6" /> },
+  { to: '/categories', label: 'Categories', icon: <Squares2X2Icon className="w-6 h-6" /> },
   { to: '/products', label: 'Products', icon: <CubeIcon className="w-6 h-6" /> },
-  { to: '/customers', label: 'Orders', icon: <ShoppingCartIcon className="w-6 h-6" /> },
-  { to: '/suppliers', label: 'Settings', icon: <Cog6ToothIcon className="w-6 h-6" /> },
+  { to: '/customers', label: 'Customers', icon: <UsersIcon className="w-6 h-6" /> },
+  { to: '/suppliers', label: 'Suppliers', icon: <TruckIcon className="w-6 h-6" /> },
   { to: '/help', label: 'Help', icon: <QuestionMarkCircleIcon className="w-6 h-6" /> },
 ];
 
 // Admin-only nav items
 const adminNavItems = [
   { to: '/user-management', label: 'Manage Users', icon: <UserIcon className="w-6 h-6" /> },
-  { to: '/storage-member', label: 'Manage Storage Member', icon: <UserIcon className="w-6 h-6"/> },
+  { to: '/storage-member', label: 'Manage Storage Member', icon: <UsersIcon className="w-6 h-6" /> },
 ];
 
 const Sidebar = ({ user }) => {
@@ -80,7 +81,9 @@ const Sidebar = ({ user }) => {
       <img
         src={user && user.avatar === 'def' ? reactLogo : user?.avatar}
         alt="avatar"
-        className="w-10 h-10 rounded-full border-2 border-gray-400 bg-white object-cover mb-6"
+        className="w-10 h-10 rounded-full border-2 border-gray-400 bg-white object-cover mb-6 cursor-pointer"
+        onClick={() => navigate('/profile')}
+        title="Profile"
       />
       <nav className="flex flex-col gap-2 mt-4 w-full">
         {navItems.map((item) => (

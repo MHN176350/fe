@@ -115,12 +115,16 @@ const WarehouseList = ({ user, showModal, setShowModal }) => {
                       <td className="py-2 px-4 border-r border-gray-200">{wh.createdDate}</td>
                       <td className="py-2 px-4 border-r border-gray-200">{wh.updatedDate}</td>
                       <td className="py-2 px-4">
-                        <Link
-                          to={`/warehouse/${wh.id}`}
-                          className="text-blue-600 hover:underline"
-                        >
-                          Show Detail
-                        </Link>
+                        {wh.id ? (
+                          <Link
+                            to={`/warehouse/${wh.id}`}
+                            className="text-blue-600 hover:underline"
+                          >
+                            Show Detail
+                          </Link>
+                        ) : (
+                          <span className="text-gray-400">No Detail</span>
+                        )}
                       </td>
                     </tr>
                   ))

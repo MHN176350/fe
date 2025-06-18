@@ -9,11 +9,15 @@ const ROLE_OPTIONS = [
 const WarehouseMemberManage = () => {
   const [codes, setCodes] = useState([]);
   const [selectedCode, setSelectedCode] = useState('');
+  const [selectedId, setSelectedId] = useState(null);
   const [members, setMembers] = useState([]);
   const [loadingCodes, setLoadingCodes] = useState(true);
   const [loadingMembers, setLoadingMembers] = useState(false);
   const [msg, setMsg] = useState('');
   const [error, setError] = useState('');
+  const [showAdd, setShowAdd] = useState(false);
+  const [addForm, setAddForm] = useState({ userName: '', roleId: 1 });
+  const [adding, setAdding] = useState(false);
 
   // Fetch storage codes on mount
   useEffect(() => {
@@ -39,6 +43,8 @@ const WarehouseMemberManage = () => {
   useEffect(() => {
     if (!selectedCode) {
       setMembers([]);
+      setShowAdd(false);
+      setSelectedId(null);
       return;
     }
     const fetchMembers = async () => {
@@ -82,12 +88,59 @@ const WarehouseMemberManage = () => {
     }
   };
 
-
+  // Handle delete member (dummy, implement API if needed)
   const handleDelete = (storageUserId) => {
-    // TODO: Implement delete API if available
     setMembers((prev) => prev.filter((m) => m.id !== storageUserId));
     setMsg('Member deleted (local only).');
     setTimeout(() => setMsg(''), 2000);
+  };
+
+  // Handle add member form
+  const handleAddChange = (e) => {
+    const { name, value } = e.target;
+    setAddForm((prev) => ({
+      ...prev,
+      [name]: name === 'roleId' ? Number(value) : value
+    }));
+  };
+
+  const handleAddSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setMsg('');
+    setAdding(true);
+    try {
+      const stId = selectedId;
+      const req = {
+        userName: addForm.userName,
+        stId,
+        roleId: addForm.roleId
+      };
+      const res = await api.post('/api/warehouse/addMember', req);
+      if (res.data.statusCode === 200) {
+        setMsg('Member added.');
+        setShowAdd(false);
+        // Refresh members
+        const memRes = await api.get(`/api/warehouse/members/${selectedCode}`);
+        setMembers(memRes.data.data || []);
+        setAddForm({ userName: '', roleId: 1 });
+      } else {
+        setError(res.data.message || 'Failed to add member.');
+      }
+    } catch {
+      setError('Failed to add member.');
+    } finally {
+      setAdding(false);
+      setTimeout(() => setMsg(''), 2000);
+    }
+  };
+
+  // Handle dropdown change
+  const handleStorageChange = (e) => {
+    const code = e.target.value;
+    setSelectedCode(code);
+    const found = codes.find(c => c.code === code);
+    setSelectedId(found ? found.id : null);
   };
 
   return (
@@ -104,15 +157,69 @@ const WarehouseMemberManage = () => {
             <select
               className="px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-400"
               value={selectedCode}
-              onChange={e => setSelectedCode(e.target.value)}
+              onChange={handleStorageChange}
             >
               <option value="">-- Select Storage Code --</option>
-              {codes.map(code => (
-                <option key={code} value={code}>{code}</option>
+              {codes.map(codeObj => (
+                <option key={codeObj.code} value={codeObj.code}>{codeObj.code}</option>
               ))}
             </select>
           )}
         </div>
+        {selectedCode && (
+          <button
+            className="mb-4 px-6 py-2 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 text-white font-semibold shadow hover:from-blue-500 hover:to-blue-700 transition"
+            onClick={() => setShowAdd(true)}
+          >
+            + Add Member
+          </button>
+        )}
+        {showAdd && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 animate-fade-in">
+            <form
+              onSubmit={handleAddSubmit}
+              className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-xs flex flex-col items-center border border-blue-200"
+            >
+              <h3 className="text-xl font-bold mb-4 text-gray-800">Add Member</h3>
+              <input
+                type="text"
+                name="userName"
+                value={addForm.userName}
+                onChange={handleAddChange}
+                placeholder="Username"
+                required
+                className="mb-4 w-full px-4 py-2 rounded bg-gray-100 text-gray-900 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              />
+              <select
+                name="roleId"
+                value={addForm.roleId}
+                onChange={handleAddChange}
+                className="mb-4 w-full px-4 py-2 rounded bg-gray-100 text-gray-900 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              >
+                {ROLE_OPTIONS.map(opt => (
+                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                ))}
+              </select>
+              <div className="flex w-full justify-between">
+                <button
+                  type="button"
+                  className="px-4 py-2 rounded-full bg-gray-400 text-white font-semibold hover:bg-gray-600 transition"
+                  onClick={() => setShowAdd(false)}
+                  disabled={adding}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-full bg-blue-500 text-white font-semibold hover:bg-blue-700 transition ml-2"
+                  disabled={adding}
+                >
+                  {adding ? 'Adding...' : 'Add'}
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
         {loadingMembers ? (
           <div className="text-gray-600">Loading members...</div>
         ) : selectedCode && (
